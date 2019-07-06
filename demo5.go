@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 /**
@@ -191,7 +192,61 @@ func nilSlice() {
 	}
 }
 
-// todo 用make来创建切片
+// 用make来创建切片 也是创建动态数组的方式
+func makeSlice() {
+	fmt.Println("make slice");
+	//    make([type],len,cap) //不传cap默认与len相同
+	//a := make([]int, 5); // len(a)=5  cap(a)=5
+	a := make([]int, 5); // len(a)=5  cap(a)=5
+	fmt.Println(a, len(a), cap(a));
+	b := make([]int, 0, 5) //len(b)=0  cap(b)=5
+	fmt.Println("b1", b, len(b), cap(b));
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	fmt.Println("b2", b, len(b), cap(b));
+	b = b[1:] // len(b)=4, cap(b)=4
+	fmt.Println("b3", b, len(b), cap(b));
+}
+
+/**
+切片的切片，切片的切片包含任何类型，甚至包含其他切片
+*/
+func sliceOfSlice() {
+	//创建一个＃字版
+	board := [][]string{
+		[] string{"_", "_", "_"},
+		[] string{"_", "_", "_"},
+		[] string{"_", "_", "_"},
+	}
+	fmt.Println("board before", board);
+	//两玩家轮流打X/O
+	board[0][0] = "X"
+	board[2][2] = "O"
+	board[1][2] = "X"
+	board[1][0] = "O"
+	board[0][2] = "X"
+	for i := 0; i < len(board); i++ {
+		fmt.Printf("%s\n", strings.Join(board[i], ""));
+	}
+}
+
+/**
+向切片中追加元素
+*/
+func appendSlice() {
+	var s []int;
+	s = append(s, 0);
+	printSlice(s);
+	s = append(s, 1);
+	printSlice(s);
+	//可一次性添加多个元素，按需增长
+	s = append(s, 2, 3, 4);
+	printSlice(s);
+	/**
+	append（s []T,vs ...T） 第一个参数s是类型为T的切片
+	其余类型为T的值将追加到该切片的末尾。
+	当s的底层数组太小不足容纳给定值时，会分配更大的数组，返回的切片会指向新数组
+	 */
+}
 
 func main() {
 	pointer();
@@ -201,5 +256,8 @@ func main() {
 	arrayFunc();
 	slicesFn();
 	slicesSyntax();
-	nilSlice()
+	nilSlice();
+	makeSlice();
+	sliceOfSlice();
+	appendSlice();
 }
