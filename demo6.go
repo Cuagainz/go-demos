@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "golang.org/x/tour/pic"
 
 /**
 range 用于遍历切片
@@ -21,9 +22,25 @@ func rangeExample() {
 	for _, value := range pow {
 		fmt.Println(value)
 	}
-	//todo 练习切片
-
 }
+func Pic(dx, dy int) [][]uint8 {
+	a := make([][]uint8, dx);
+	for x := range a {
+		b := make([]uint8, dy);
+		for y := range b {
+			b[y] = uint8(x ^ y - 1)
+		}
+		a[x] = b;
+	}
+	return a
+}
+
+func practiceSli() {
+	//返回一个长度为dyg的切片，每个元素长度为dx,元素类型为unit8的切片
+	pic.Show(Pic)
+}
+
 func main() {
 	rangeExample();
+	practiceSli();
 }
